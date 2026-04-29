@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Secure Browser | Safe Exam Browser Style</title>
+  <style>
+    /* YOUR EXACT CSS – NO CHANGES */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      height: 100vh;
+      width: 100%;
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-weight: normal;
+      background: #f3f3f3;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      line-height: 1;
+    }
+    .top-bar {
+      height: 28px;
+      background-color: #e7e7e7;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .url-text {
+      font-size: 12px;
+      color: #555555;
+      margin-left: 10px;
+      letter-spacing: 0.2px;
+      user-select: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+    .window-controls {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-right: 10px;
+    }
+    .win-btn {
+      font-size: 12px;
+      color: #444444;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: "Segoe UI", Arial, sans-serif;
+      padding: 0 2px;
+      transition: background-color 0.1s ease;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .win-btn:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    .nav-bar {
+      height: 48px;
+      background-color: #f3f3f3;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .reload-icon {
+      font-size: 20px;
+      color: #666666;
+      margin-left: 14px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.1s;
+      line-height: 1;
+    }
+    .reload-icon:hover {
+      opacity: 0.7;
+    }
+    .hamburger-menu {
+      font-size: 22px;
+      color: #444444;
+      margin-right: 14px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.1s;
+      line-height: 1;
+    }
+    .hamburger-menu:hover {
+      opacity: 0.7;
+    }
+    .main-content {
+      flex: 1;
+      background-color: #f3f3f3;
+      width: 100%;
+      position: relative;
+      overflow: auto;
+    }
+    .browser-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      background: white;
+    }
+    .bottom-bar {
+      height: 42px;
+      background-color: #eaeaea;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .firefox-icon {
+      background: url(img/seb.png);
+      background-size: cover;
+      background-position: center;
+      font-size: 22px;
+      width: 35px;
+      height: 35px;
+      padding-bottom: 20px;
+      margin-left: 12px;
+      line-height: 1;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      transition: opacity 0.1s;
+    }
+    .firefox-icon:hover {
+      opacity: 0.75;
+    }
+    .right-system-group {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+    .battery-icon {
+      font-size: 18px;
+      color: #4caf50;
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+    }
+    .volume-icon {
+      font-size: 18px;
+      color: #333333;
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+    }
+    .eng-text {
+      font-size: 13px;
+      color: #333333;
+      line-height: 1;
+      font-weight: bold;
+    }
+    .datetime-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.2;
+      text-align: right;
+    }
+    .time-display {
+      font-size: 12px;
+      color: #333333;
+      line-height: 1.2;
+    }
+    .date-display {
+      font-size: 12px;
+      color: #333333;
+      line-height: 1.2;
+    }
+    .power-icon {
+      font-size: 20px;
+      color: #333333;
+      margin-right: 12px;
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+    }
+    button, div, span {
+      font-weight: normal;
+    }
+    button:focus {
+      outline: none;
+    }
+    .seb-img{
+      background-image: url(img/seb.png);
+      background-position: center;
+      background-size: cover;
+      width: 20px;
+      height: 20px;
+      margin-left: 10px;
+    }
+    .icon{
+      width: 12px;
+      height: 12px;
+      color: #2b7cff;
+    }
+    #icon1{
+      height: 2px;
+      width: 12px;
+    }
+    #menu1{
+      height: 20px;
+      width: 22px; 
+    }
+    #menu2{
+      height: 20px;
+      width: 20px; 
+    }
+    #menu3{
+      height: 25px;
+      width: 25px; 
+    }
+    #menu4{
+      height: 35px;
+      width: 35px; 
+    }
+  </style>
+</head>
+<body>
+
+  <!-- top system bar -->
+  <div class="top-bar">
+    <div class="seb-img"></div>
+    <div class="url-text" id="urlDispla">Safe Exam Browser</div>
+    <div class="window-controls">
+      <button class="win-btn" id="minimizeBtn" aria-label="Minimize"><img src="img/minimiz.png" alt="" class="icon" id="icon1"></button>
+      <button class="win-btn" id="maximizeBtn" aria-label="Maximize" ><img src="img/square.png" alt="" class="icon"></button>
+      <button class="win-btn" id="closeBtn" aria-label="Close"><img src="img/cross.png" alt="" class="icon"></button>
+    </div>
+  </div>
+
+  <!-- navigation bar -->
+  <div class="nav-bar">
+    <button class="reload-icon" id="reloadBtn" aria-label="Reload"><img src="img/relode.png" alt="" id="menu2"></button>
+    <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu"><img src="img/menu1.png" alt="" id="menu1"></button>
+  </div>
+
+  <!-- main content -->
+  <main class="main-content" id="mainContent">
+    <iframe class="browser-frame" id="browserFrame" title="Secure Browser Content" src="about:blank"></iframe>
+  </main>
+
+  <!-- bottom system bar -->
+  <div class="bottom-bar">
+    <div class="firefox-icon" id="foxSearchBtn"></div>
+    <div class="right-system-group">
+      <span class="volume-icon"><img src="img/sound.png" alt="" id="menu4"></span>
+      <span class="eng-text">ENG</span>
+      <div class="datetime-stack">
+        <span class="time-display" id="liveTime">11:16 AM</span>
+        <span class="date-display" id="liveDate">10/18/2022</span>
+      </div>
+      <span class="power-icon"><img src="img/power.png" alt="" id="menu3"></span>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ========== PROXY CONFIGURATION ==========
+      // This will automatically use your server's /proxy endpoint
+      const PROXY_URL = window.location.origin + '/proxy?url=';
+
+      // DOM elements
+      const iframe = document.getElementById('browserFrame');
+      // const urlDisplaySpan = document.getElementById('urlDispla'); // note ID typo in your HTML
+      const reloadBtn = document.getElementById('reloadBtn');
+      const foxBtn = document.getElementById('foxSearchBtn');
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const minimizeBtn = document.getElementById('minimizeBtn');
+      const maximizeBtn = document.getElementById('maximizeBtn');
+      const closeBtn = document.getElementById('closeBtn');
+
+      let currentUrl = '';
+
+      // Helper: load any URL through the proxy
+      function loadUrlIntoIframe(rawUrl, isRetry = false) {
+        if (!rawUrl || rawUrl.trim() === '') return;
+        let finalUrl = rawUrl.trim();
+
+        // Smart URL formatting (same as your original)
+        const urlPattern = /^(https?:\/\/)/i;
+        const simpleDomainPattern = /^[a-zA-Z0-9][a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/|$)/;
+        if (!urlPattern.test(finalUrl)) {
+          if (simpleDomainPattern.test(finalUrl)) {
+            finalUrl = 'https://' + finalUrl;
+          } else {
+            const query = encodeURIComponent(finalUrl);
+            finalUrl = `https://www.google.com/search?q=${query}`;
+          }
+        }
+
+        currentUrl = finalUrl;
+        // Send the request through your proxy server
+        const proxiedUrl = PROXY_URL + encodeURIComponent(finalUrl);
+        iframe.src = proxiedUrl;
+
+        // Update top bar display
+        updateUrlDisplay(finalUrl);
+        localStorage.setItem('secureBrowser_lastUrl', finalUrl);
+      }
+
+      function updateUrlDisplay(url) {
+        if (!url || url === 'about:blank') {
+          urlDisplaySpan.textContent = 'https://safeexambrowser.org/start';
+          return;
+        }
+        let displayUrl = url;
+        try {
+          const urlObj = new URL(url);
+          let short = urlObj.hostname + urlObj.pathname;
+          if (short.length > 60) short = short.substring(0, 57) + '...';
+          displayUrl = short;
+        } catch (e) {
+          if (displayUrl.length > 70) displayUrl = displayUrl.substring(0, 67) + '...';
+        }
+        // urlDisplaySpan.textContent = displayUrl;
+      }
+
+      function reloadCurrent() {
+        if (currentUrl) {
+          loadUrlIntoIframe(currentUrl, true);
+        } else {
+          const stored = localStorage.getItem('secureBrowser_lastUrl');
+          if (stored) loadUrlIntoIframe(stored);
+        }
+      }
+
+      function openInNewTab() {
+        if (currentUrl && currentUrl !== 'about:blank') {
+          window.open(currentUrl, '_blank', 'noopener,noreferrer');
+        } else {
+          const stored = localStorage.getItem('secureBrowser_lastUrl');
+          if (stored) window.open(stored, '_blank');
+        }
+      }
+
+      function promptAndNavigate() {
+        let input = prompt("🔍 Secure Browser — Enter search term or full URL:\n(Example: 'github', 'wikipedia.org', 'https://news.ycombinator.com')");
+        if (input && input.trim()) {
+          loadUrlIntoIframe(input.trim());
+        }
+      }
+
+      function initSession() {
+        const stored = localStorage.getItem('secureBrowser_lastUrl');
+        if (stored && stored !== 'about:blank') {
+          loadUrlIntoIframe(stored);
+        } else {
+          let first = prompt("Welcome to Secure Browser!\nEnter a search term or URL to start:", "example.com");
+          if (first && first.trim()) loadUrlIntoIframe(first.trim());
+          else loadUrlIntoIframe("https://example.com");
+        }
+      }
+
+      function updateDateTime() {
+        const now = new Date();
+        let hours = now.getHours();
+        const minutes = now.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+        const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+        const timeString = `${hours}:${minutesStr} ${ampm}`;
+        const month = now.getMonth()+1, day = now.getDate(), year = now.getFullYear();
+        document.getElementById('liveTime').textContent = timeString;
+        document.getElementById('liveDate').textContent = `${month}/${day}/${year}`;
+      }
+
+      // Event listeners
+      minimizeBtn.addEventListener('click', () => console.log('minimize demo'));
+      maximizeBtn.addEventListener('click', () => {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        else document.exitFullscreen();
+      });
+      closeBtn.addEventListener('click', () => {
+        if (confirm("Close demo? (window won't actually close)")) alert("Secure Browser demo closed.");
+      });
+      reloadBtn.addEventListener('click', reloadCurrent);
+      foxBtn.addEventListener('click', promptAndNavigate);
+      hamburgerBtn.addEventListener('click', () => console.log('menu'));
+
+      // Optional: add external open button (keep same as before)
+      const navBar = document.querySelector('.nav-bar');
+      const hamburger = document.getElementById('hamburgerBtn');
+      const extBtn = document.createElement('button');
+      extBtn.innerHTML = '';
+      extBtn.className = 'reload-icon';
+      extBtn.style.fontSize = '18px';
+      extBtn.style.marginRight = '8px';
+      extBtn.style.marginLeft = 'auto';
+      extBtn.title = 'Open current page in new tab';
+      extBtn.addEventListener('click', openInNewTab);
+      navBar.insertBefore(extBtn, hamburger);
+
+      iframe.addEventListener('load', () => {
+        if (currentUrl) updateUrlDisplay(currentUrl);
+      });
+
+      updateDateTime();
+      setInterval(updateDateTime, 1000);
+      initSession();
+    })();
+  </script>
+</body>
+</html>
