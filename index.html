@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Secure Browser | Safe Exam Browser Style</title>
+  <title>Secure Browser | Exam Portal</title>
   <style>
     /* YOUR EXACT CSS – NO CHANGES */
     * {
@@ -245,7 +245,7 @@
   <!-- top system bar -->
   <div class="top-bar">
     <div class="seb-img"></div>
-    <div class="url-text" id="urlDispla">Safe Exam Browser</div>
+    <div class="url-text" id="fixedTitle">Exam Portal</div>
     <div class="window-controls">
       <button class="win-btn" id="minimizeBtn" aria-label="Minimize"><img src="img/minimiz.png" alt="" class="icon" id="icon1"></button>
       <button class="win-btn" id="maximizeBtn" aria-label="Maximize" ><img src="img/square.png" alt="" class="icon"></button>
@@ -253,7 +253,7 @@
     </div>
   </div>
 
-  <!-- navigation bar -->
+  <!-- navigation bar (no search button) -->
   <div class="nav-bar">
     <button class="reload-icon" id="reloadBtn" aria-label="Reload"><img src="img/relode.png" alt="" id="menu2"></button>
     <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu"><img src="img/menu1.png" alt="" id="menu1"></button>
@@ -266,7 +266,8 @@
 
   <!-- bottom system bar -->
   <div class="bottom-bar">
-    <div class="firefox-icon" id="foxSearchBtn"></div>
+    <!-- Fox icon now only clears saved session -->
+    <div class="firefox-icon" id="foxClearBtn"></div>
     <div class="right-system-group">
       <span class="volume-icon"><img src="img/sound.png" alt="" id="menu4"></span>
       <span class="eng-text">ENG</span>
@@ -281,14 +282,12 @@
   <script>
     (function() {
       // ========== PROXY CONFIGURATION ==========
-      // This will automatically use your server's /proxy endpoint
       const PROXY_URL = window.location.origin + '/proxy?url=';
 
       // DOM elements
       const iframe = document.getElementById('browserFrame');
-      // const urlDisplaySpan = document.getElementById('urlDispla'); // note ID typo in your HTML
       const reloadBtn = document.getElementById('reloadBtn');
-      const foxBtn = document.getElementById('foxSearchBtn');
+      const foxClearBtn = document.getElementById('foxClearBtn');
       const hamburgerBtn = document.getElementById('hamburgerBtn');
       const minimizeBtn = document.getElementById('minimizeBtn');
       const maximizeBtn = document.getElementById('maximizeBtn');
@@ -296,86 +295,66 @@
 
       let currentUrl = '';
 
-      // Helper: load any URL through the proxy
-      function loadUrlIntoIframe(rawUrl, isRetry = false) {
+      // Load any URL through the proxy
+      function loadUrlIntoIframe(rawUrl) {
         if (!rawUrl || rawUrl.trim() === '') return;
         let finalUrl = rawUrl.trim();
 
-        // Smart URL formatting (same as your original)
-        const urlPattern = /^(https?:\/\/)/i;
-        const simpleDomainPattern = /^[a-zA-Z0-9][a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/|$)/;
-        if (!urlPattern.test(finalUrl)) {
-          if (simpleDomainPattern.test(finalUrl)) {
-            finalUrl = 'https://' + finalUrl;
-          } else {
-            const query = encodeURIComponent(finalUrl);
-            finalUrl = `https://www.google.com/search?q=${query}`;
-          }
+        // Ensure https prefix for domains
+        if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
+          finalUrl = 'https://' + finalUrl;
         }
 
         currentUrl = finalUrl;
-        // Send the request through your proxy server
         const proxiedUrl = PROXY_URL + encodeURIComponent(finalUrl);
         iframe.src = proxiedUrl;
 
-        // Update top bar display
-        updateUrlDisplay(finalUrl);
+        // Save to localStorage for session restore
         localStorage.setItem('secureBrowser_lastUrl', finalUrl);
       }
 
-      function updateUrlDisplay(url) {
-        if (!url || url === 'about:blank') {
-          urlDisplaySpan.textContent = 'https://safeexambrowser.org/start';
-          return;
-        }
-        let displayUrl = url;
-        try {
-          const urlObj = new URL(url);
-          let short = urlObj.hostname + urlObj.pathname;
-          if (short.length > 60) short = short.substring(0, 57) + '...';
-          displayUrl = short;
-        } catch (e) {
-          if (displayUrl.length > 70) displayUrl = displayUrl.substring(0, 67) + '...';
-        }
-        // urlDisplaySpan.textContent = displayUrl;
-      }
-
+      // Reload current page
       function reloadCurrent() {
         if (currentUrl) {
-          loadUrlIntoIframe(currentUrl, true);
+          loadUrlIntoIframe(currentUrl);
         } else {
           const stored = localStorage.getItem('secureBrowser_lastUrl');
           if (stored) loadUrlIntoIframe(stored);
+          else loadUrlIntoIframe('https://exam3.ethernet.edu.et');
         }
       }
 
+      // Open current page in new tab (external)
       function openInNewTab() {
         if (currentUrl && currentUrl !== 'about:blank') {
           window.open(currentUrl, '_blank', 'noopener,noreferrer');
         } else {
           const stored = localStorage.getItem('secureBrowser_lastUrl');
           if (stored) window.open(stored, '_blank');
+          else window.open('https://exam3.ethernet.edu.et', '_blank');
         }
       }
 
-      function promptAndNavigate() {
-        let input = prompt("🔍 Secure Browser — Enter search term or full URL:\n(Example: 'github', 'wikipedia.org', 'https://news.ycombinator.com')");
-        if (input && input.trim()) {
-          loadUrlIntoIframe(input.trim());
+      // Clear saved session (fox icon)
+      function clearSavedSession() {
+        const warning = "⚠️ Clear saved session?\n\nThis will delete the stored URL. After you refresh or restart the browser, it will start from the default page (exam3.ethernet.edu.et).\nYour current page will NOT be closed or reloaded.\n\nDo you want to continue?";
+        if (confirm(warning)) {
+          localStorage.removeItem('secureBrowser_lastUrl');
+          alert("✅ Saved state cleared. Next refresh will start from the default page.");
         }
       }
 
+      // Initialize: load stored URL or default exam site
       function initSession() {
         const stored = localStorage.getItem('secureBrowser_lastUrl');
         if (stored && stored !== 'about:blank') {
           loadUrlIntoIframe(stored);
         } else {
-          let first = prompt("Welcome to Secure Browser!\nEnter a search term or URL to start:", "example.com");
-          if (first && first.trim()) loadUrlIntoIframe(first.trim());
-          else loadUrlIntoIframe("https://example.com");
+          loadUrlIntoIframe('https://exam3.ethernet.edu.et');
         }
       }
 
+      // Date/time update
       function updateDateTime() {
         const now = new Date();
         let hours = now.getHours();
@@ -399,14 +378,14 @@
         if (confirm("Close demo? (window won't actually close)")) alert("Secure Browser demo closed.");
       });
       reloadBtn.addEventListener('click', reloadCurrent);
-      foxBtn.addEventListener('click', promptAndNavigate);
+      foxClearBtn.addEventListener('click', clearSavedSession);
       hamburgerBtn.addEventListener('click', () => console.log('menu'));
 
-      // Optional: add external open button (keep same as before)
+      // Add external open button (↗) next to hamburger
       const navBar = document.querySelector('.nav-bar');
       const hamburger = document.getElementById('hamburgerBtn');
       const extBtn = document.createElement('button');
-      extBtn.innerHTML = '';
+      extBtn.innerHTML = '↗';
       extBtn.className = 'reload-icon';
       extBtn.style.fontSize = '18px';
       extBtn.style.marginRight = '8px';
@@ -415,10 +394,7 @@
       extBtn.addEventListener('click', openInNewTab);
       navBar.insertBefore(extBtn, hamburger);
 
-      iframe.addEventListener('load', () => {
-        if (currentUrl) updateUrlDisplay(currentUrl);
-      });
-
+      // Start everything
       updateDateTime();
       setInterval(updateDateTime, 1000);
       initSession();
