@@ -1,3 +1,5 @@
+const http = require('http');
+const https = require('https');
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
@@ -15,9 +17,13 @@ app.get('/proxy', async (req, res) => {
 
   try {
     const response = await axios.get(targetUrl, {
-      headers: { 'User-Agent': 'Mozilla/5.0' },
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      },
       timeout: 60000,
       maxRedirects: 5,
+      httpAgent: new http.Agent({ keepAlive: true }), // Added for reliability
+      httpsAgent: new https.Agent({ keepAlive: true }) // Added for reliability
     });
     let html = response.data;
     const urlObj = new URL(targetUrl);
