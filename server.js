@@ -16,7 +16,7 @@ app.get('/proxy', async (req, res) => {
   try {
     const response = await axios.get(targetUrl, {
       headers: { 'User-Agent': 'Mozilla/5.0' },
-      timeout: 15000,
+      timeout: 60000,
       maxRedirects: 5,
     });
     let html = response.data;
